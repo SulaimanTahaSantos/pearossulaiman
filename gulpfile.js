@@ -31,7 +31,7 @@ var path = {
 // HTML
 gulp.task("html:build", function () {
   return gulp
-    .src(path.src.php)
+    .src(path.src.html)
     .pipe(
       fileinclude({
         basepath: path.src.incdir,

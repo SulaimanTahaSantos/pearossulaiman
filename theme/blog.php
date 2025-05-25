@@ -1,31 +1,23 @@
-<?php
-include_once '../config/config.php';
-include_once '../controller/newsController.php';
-
-
-$news = readAllNews($mysqli);
-
-
-?>
+/**
+ * WEBSITE: https://themefisher.com
+ * TWITTER: https://twitter.com/themefisher
+ * FACEBOOK: https://www.facebook.com/themefisher
+ * GITHUB: https://github.com/themefisher/
+ */
 
 <!DOCTYPE html>
-
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="zxx">
 
 <head>
   <meta charset="utf-8">
-  <title>PearOS Sulaiman</title>
+  <title>Agen | Bootstrap Agency Template</title>
 
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="agen" />
   
   <!-- ** Plugins Needed for the Project ** -->
   <!-- Bootstrap -->
@@ -45,25 +37,16 @@ $news = readAllNews($mysqli);
   <!--Favicon-->
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
   <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-<style>
-  .elipsis {
-  display: -webkit-box;               
-  -webkit-box-orient: vertical;      
-  overflow: hidden;                  
-  -webkit-line-clamp: 2;              
-  line-height: 1.5;                   
-  max-height: 4.5em;                  
-}
 
-</style>
 </head>
 
 <body>
   
 
+
 <header class="navigation fixed-top">
   <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="index.php"><img width="40px" src="images/pearos.png" alt="Egen"></a>
+    <a class="navbar-brand" href="index.php"><img src="images/logo.png" alt="Egen"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
       aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -78,7 +61,29 @@ $news = readAllNews($mysqli);
           <a class="nav-link" href="about.php">About</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="services.php">Services</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="blog.php">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="portfolio.php">Portfolio</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">Pages</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="team.php">Team</a>
+            <a class="dropdown-item" href="team-single.php">Team Details</a>
+            <a class="dropdown-item" href="career.php">Career</a>
+            <a class="dropdown-item" href="career-single.php">Career Details</a>
+            <a class="dropdown-item" href="blog-single.php">Blog Details</a>
+            <a class="dropdown-item" href="pricing.php">Pricing</a></a>
+            <a class="dropdown-item" href="faqs.php">FAQ's</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.php">Contact</a>
         </li>
       </ul>
     </div>
@@ -86,11 +91,11 @@ $news = readAllNews($mysqli);
 </header>
 
 <!-- page-title -->
-<section class="page-title bg-cover" data-background="https://lasombradelhelicoptero.wordpress.com/wp-content/uploads/2011/12/1b936-pearos1.png">
+<section class="page-title bg-cover" data-background="images/backgrounds/page-title.jpg">
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <h1 class="display-1 text-white font-weight-bold font-primary">Blogs</h1>
+        <h1 class="display-1 text-white font-weight-bold font-primary">Our Blog</h1>
       </div>
     </div>
   </div>
@@ -101,30 +106,105 @@ $news = readAllNews($mysqli);
 <section class="section">
   <div class="container">
     <div class="row">
-      <?php
-      
-       while ($new = $news->fetch_assoc()) { ?>
-                 <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-4 col-md-6 mb-4">
         <article class="card">
-          <img style="width: 200px;" height="200px" src="./uploads/news/<?php echo htmlspecialchars($new['body']); ?>" alt="post-thumb" class="card-img-top mb-2">
+          <img src="images/blog/post-1.jpg" alt="post-thumb" class="card-img-top mb-2">
           <div class="card-body p-0">
-            <time>
-              <?php
-              echo $new['publication_date'];
-              ?>
-            </time>
-            <a href="blog-single.php?id=<?php echo $new['id']; ?>" class="h4 card-title d-block my-3 text-dark hover-text-underline"><?php echo htmlspecialchars($new['title']); ?></a>
-              </a>
-              <p class="elipsis">
-              <?php
-              echo htmlspecialchars($new['descripcion']);
-              ?>
-              </p>
-            <a href="blog-single.php?id=<?php echo $new['id']; ?>" class="btn btn-transparent">Read more</a>
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
           </div>
         </article>
       </div>
-                <?php } ?>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-2.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-3.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-1.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-2.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-3.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-1.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-2.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <article class="card">
+          <img src="images/blog/post-3.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single.php" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="blog-single.php" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
     </div>
   </div>
 </section>
@@ -174,12 +254,15 @@ $news = readAllNews($mysqli);
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6 text-center text-md-left">
-          <p class="text-light mb-0"> PearOS Sulaiman &copy; 2025. All Rights Reserved.
+          <p class="text-light mb-0">Copyright &copy; 2019 a theme by <a class="text-gradient-primary" href="https://themefisher.com">themefisher.com</a>
           </p>
         </div>
         <div class="col-md-6">
           <ul class="list-inline text-md-right text-center">
-            <li class="list-inline-item"><a class="d-block p-3 text-white" href="https://github.com/SulaimanTahaSantos?tab=repositories"><i class="ti-github"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-facebook"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-twitter-alt"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-instagram"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-github"></i></a></li>
           </ul>
         </div>
       </div>

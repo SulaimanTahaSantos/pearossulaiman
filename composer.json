@@ -1,0 +1,15 @@
+{
+    "name": "pearos-sulaiman/crud-php",
+    "description": "PearOS Sulaiman - Sistema de Gestión de Contenido PHP",
+    "type": "project",
+    "require": {
+        "php": "^8.0",
+        "ext-mysqli": "*",
+        "ext-json": "*",
+        "ext-gd": "*",
+        "ext-fileinfo": "*"
+    },
+    "scripts": {
+        "start": "php -S 0.0.0.0:$PORT -t theme/"
+    }
+}

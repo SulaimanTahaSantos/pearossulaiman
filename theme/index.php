@@ -1,419 +1,578 @@
-<?php
-session_start();
-include_once "../config/config.php"; 
-include_once "../controller/newsController.php";
-
-
-// Vamos a hacer que redirija el usuario si el usuario no está logueado
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
-function readProject($mysqli) {
-    $sql = "SELECT * FROM projects";
-    $result = $mysqli->query($sql);
-    
-    if (!$result) {
-        echo "Error en la consulta: " . $mysqli->error;
-        return false; // Devuelve false si hay error
-    }
-    
-    return $result;
-}
-
-$news = readNews($mysqli);
-
-
-?>
-
+/**
+ * WEBSITE: https://themefisher.com
+ * TWITTER: https://twitter.com/themefisher
+ * FACEBOOK: https://www.facebook.com/themefisher
+ * GITHUB: https://github.com/themefisher/
+ */
 
 <!DOCTYPE html>
-
-<!--
- // WEBSITE: https://themefisher.com
- // TWITTER: https://twitter.com/themefisher
- // FACEBOOK: https://www.facebook.com/themefisher
- // GITHUB: https://github.com/themefisher/
--->
-
 <html lang="zxx">
 
 <head>
-    <meta charset="utf-8">
-    <title>PearOS Sulaiman</title>
+  <meta charset="utf-8">
+  <title>Agen | Bootstrap Agency Template</title>
 
-    <!-- mobile responsive meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <!-- theme meta -->
+  <meta name="theme-name" content="agen" />
+  
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
+  <!-- venobox css -->
+  <link rel="stylesheet" href="plugins/venobox/venobox.css">
+  <!-- card slider -->
+  <link rel="stylesheet" href="plugins/card-slider/css/style.css">
 
-    <!-- theme meta -->
-    <meta name="theme-name" content="agen" />
+  <!-- Main Stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+  
+  <!--Favicon-->
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 
-    <!-- ** Plugins Needed for the Project ** -->
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
-    <!-- slick slider -->
-    <link rel="stylesheet" href="plugins/slick/slick.css">
-    <!-- themefy-icon -->
-    <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
-    <!-- venobox css -->
-    <link rel="stylesheet" href="plugins/venobox/venobox.css">
-    <!-- card slider -->
-    <link rel="stylesheet" href="plugins/card-slider/css/style.css">
-
-    <!-- Main Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-
-    <!--Favicon-->
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    
- <style>
-    .elipsis {
-    display: -webkit-box;               
-    -webkit-box-orient: vertical;      
-    overflow: hidden;                  
-    -webkit-line-clamp: 2;              
-    line-height: 1.5;                   
-    max-height: 4.5em;                  
-  }
-
-  .projects-section {
-    background-color: #f8f9fa;
-}
-
-.section-title {
-    font-weight: 700;
-    color: #333;
-}
-
-.title-underline {
-    height: 3px;
-    width: 70px;
-    background-color: #007bff;
-    margin: 0 auto;
-    margin-bottom: 20px;
-}
-
-.project-card {
-    transition: all 0.3s ease;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-}
-
-.project-img-container {
-    position: relative;
-    overflow: hidden;
-}
-
-.project-img {
-    height: 220px;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.project-card:hover .project-img {
-    transform: scale(1.05);
-}
-
-.project-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 123, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.project-card:hover .project-overlay {
-    opacity: 1;
-}
-
-.project-buttons {
-    text-align: center;
-}
-
-.project-buttons .btn {
-    margin: 0 5px;
-}
-
-.card-body {
-    padding: 1.5rem;
-}
-
-.card-title {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-  </style>
 </head>
 
 <body>
-    <header class="navigation fixed-top">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <a class="navbar-brand" href="index.php"><img width="40px" src="images/pearos.png" alt="Egen"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-                aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse text-center" id="navigation">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.php">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="blog.php">Blog</a>
-                    </li>
-                </ul>
-            </div>
-            <?php if(isset($_SESSION['user_id'])): ?>
-                <div class="flex items-center space-x-2">
-                    <a href="./uploads/userAvatar/"></a>
-                    <img width="42px" height="42px" src="<?= './uploads/userAvatar/' . $_SESSION['user_avatar'] ?>" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-white">
-                    <span class="text-white hover:text-gray-300"><?= $_SESSION['user_name'] ?></span>
-                    <?php
-                        if($_SESSION['user_rol'] === 'admin'){
-                            echo '<a href="./admin/adminPanel.php" class="text-blue-400 hover:text-blue-600">
-<svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M10 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h2m10 1a3 3 0 0 1-3 3m3-3a3 3 0 0 0-3-3m3 3h1m-4 3a3 3 0 0 1-3-3m3 3v1m-3-4a3 3 0 0 1 3-3m-3 3h-1m4-3v-1m-2.121 1.879-.707-.707m5.656 5.656-.707-.707m-4.242 0-.707.707m5.656-5.656-.707.707M12 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-</svg>
+  
 
 
-</a>
+<header class="navigation fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="index.php"><img src="images/logo.png" alt="Egen"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-';
-                        }
-                    ?>
-                </div>
-            <?php endif; ?>
-            <a href="./admin/adminPanel.php"></a>
-            <ul class="flex space-x-4">
-                <?php if(!isset($_SESSION['user_id'])): ?>
-                    <li><a href="login.php" class="text-white hover:text-gray-300">Iniciar sesión</a></li>
-                    <li><a href="register.php" class="text-white hover:text-gray-300">Registrarse</a></li>
-                <?php else: ?>
-                    <li><a href="logout.php" class="text-white hover:text-gray-300">Cerrar sesión</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </header>
+    <div class="collapse navbar-collapse text-center" id="navigation">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.php">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.php">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="services.php">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="blog.php">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="portfolio.php">Portfolio</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">Pages</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="team.php">Team</a>
+            <a class="dropdown-item" href="team-single.php">Team Details</a>
+            <a class="dropdown-item" href="career.php">Career</a>
+            <a class="dropdown-item" href="career-single.php">Career Details</a>
+            <a class="dropdown-item" href="blog-single.php">Blog Details</a>
+            <a class="dropdown-item" href="pricing.php">Pricing</a></a>
+            <a class="dropdown-item" href="faqs.php">FAQ's</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.php">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
+<!-- banner -->
 <section class="banner bg-cover position-relative d-flex justify-content-center align-items-center"
-  data-background="https://lasombradelhelicoptero.wordpress.com/wp-content/uploads/2011/12/1b936-pearos1.png">
+  data-background="images/banner/banner2.jpg">
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <h1 class="display-1 text-white font-weight-bold font-primary">PearOS Sulaiman</h1>
+        <h1 class="display-1 text-white font-weight-bold font-primary">Creative Agency</h1>
       </div>
     </div>
   </div>
 </section>
+<!-- /banner -->
 
-    <!-- about -->
-    <section class="section-lg position-relative bg-cover" data-background="images/backgrounds/about-bg.jpg">
-        <img src="images/backgrounds/about-bg-overlay.png" alt="overlay" class="overlay-image img-fluid">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-lg-6 col-md-8 col-sm-7 col-8">
-                    <h2 class="text-white mb-4">Quienes somos</h2>
-                    <p class="text-light mb-4">En Pear OS, creemos en la simplicidad, la elegancia y la eficiencia. Somos una empresa dedicada a desarrollar un sistema operativo basado en Linux que combina un diseño atractivo con un rendimiento optimizado. Nuestra misión es ofrecer una experiencia fluida, intuitiva y moderna para usuarios de todos los niveles.
-
-Inspirados en la innovación y la accesibilidad, trabajamos constantemente para mejorar Pear OS, brindando una alternativa sólida, segura y estética en el mundo de los sistemas operativos. Si buscas un entorno ágil, estable y con una interfaz hermosa, estás en el lugar adecuado.
-
-Descubre un sistema operativo diferente. Descubre Pear OS. </p>
-                    <a href="about.php" class="btn btn-primary">Read More</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- /about -->
-
-    <!-- project -->
-  <section class="projects-section py-5">
-    <div class="container">
-        <!-- Section Header -->
-        <div class="row mb-5">
-            <div class="col-lg-8 mx-auto text-center">
-                <h2 class="section-title position-relative mb-3">Proyectos</h2>
-                <div class="title-underline"></div>
-                <p class="text-muted">Descubre nuestros trabajos más destacados</p>
-            </div>
-        </div>
-        
-        <!-- Projects Grid -->
-        <div class="row g-4">
-            
-            <?php 
-            $projects = readProject($mysqli);
-            while ($project = $projects->fetch_assoc()) { ?>
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card project-card h-100 border-0 shadow-sm">
-                    <div class="project-img-container">
-                        <img src="./uploads/projects/<?php echo htmlspecialchars($project['thumbnail']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>" 
-                            class="card-img-top project-img">
-                        <div class="project-overlay">
-                            <div class="project-buttons">
-                                <a href="<?php echo htmlspecialchars($project['url']); ?>" class="btn btn-light btn-sm">
-                                    <i class="fas fa-eye me-1"></i> Ver proyecto
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo htmlspecialchars($project['title']); ?></h5>
-                        <?php if(isset($project['description'])) { ?>
-                        <p class="card-text text-muted"><?php echo htmlspecialchars($project['description']); ?></p>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-            <?php } ?>
-        </div>
+<!-- service -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto text-center">
+        <h2 class="section-title">Our Services</h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.</p>
+        <div class="section-border"></div>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="card hover-bg-secondary shadow py-4 active">
+          <div class="card-body text-center">
+            <div class="position-relative">
+              <i
+                class="icon-lg icon-box bg-gradient-primary rounded-circle ti-palette mb-5 d-inline-block text-white"></i>
+              <i class="icon-lg icon-watermark text-white ti-palette"></i>
+            </div>
+            <h4 class="mb-4">Design</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="card hover-bg-secondary shadow py-4">
+          <div class="card-body text-center">
+            <div class="position-relative">
+              <i
+                class="icon-lg icon-box bg-gradient-primary rounded-circle ti-dashboard mb-5 d-inline-block text-white"></i>
+              <i class="icon-lg icon-watermark text-white ti-dashboard"></i>
+            </div>
+            <h4 class="mb-4">Development</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="card hover-bg-secondary shadow py-4">
+          <div class="card-body text-center">
+            <div class="position-relative">
+              <i
+                class="icon-lg icon-box bg-gradient-primary rounded-circle ti-announcement mb-5 d-inline-block text-white"></i>
+              <i class="icon-lg icon-watermark text-white ti-announcement"></i>
+            </div>
+            <h4 class="mb-4">Marketing</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-    <!-- /project -->
+<!-- /service -->
 
-
-    <!-- blog -->
-    <section class="section">
-        <div class="container">
+<!-- feature -->
+<section class="section bg-secondary position-relative">
+  <div class="bg-image overlay-secondary">
+    <img src="images/feature.jpg" alt="bg-image">
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="row align-items-center">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <img src="images/feature.jpg" alt="feature-image" class="img-fluid">
+          </div>
+          <div class="col-lg-7 offset-lg-1">
             <div class="row">
-                <div class="col-lg-10 mx-auto text-center">
-                    <h2>Latest News</h2>
-                    <div class="section-border"></div>
+              <div class="col-12">
+                <h2 class="text-white">We know What Bait to Use</h2>
+                <div class="section-border ml-0"></div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="media">
+                  <i class="icon text-gradient-primary ti-vector mr-3"></i>
+                  <div class="media-body">
+                    <h4 class="text-white">User Experience</h4>
+                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+                  </div>
                 </div>
-            </div>
-            <div class="row">
-                <?php
-                while ($new = $news->fetch_assoc()) {?>
-                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                    <article class="card">
-                        <img src="./uploads/news/<?php echo htmlspecialchars($new['body']); ?>" alt="post-thumb"
-                            class="card-img-top mb-2">
-                        <div class="card-body p-0">
-                            <time><?php
-                            echo htmlspecialchars($new['publication_date'])
-                            ?></time>
-                            <p class="elipsis">
-                                <?php
-                                echo htmlspecialchars($new['descripcion']);
-                                ?>
-                            </p>
-                        <a href="blog-single.php?id=<?php echo $new['id']; ?>" class="h4 card-title d-block my-3 text-dark hover-text-underline"><?php echo htmlspecialchars($new['title']); ?></a>
-
-                          
-                            </a>
-                            <a href="#" class="btn btn-transparent">Read more</a>
-                        </div>
-                    </article>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="media">
+                  <i class="icon text-gradient-primary ti-layout mr-3"></i>
+                  <div class="media-body">
+                    <h4 class="text-white">Responsive Layout</h4>
+                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+                  </div>
                 </div>
-
-                <?php } ?>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="media">
+                  <i class="icon text-gradient-primary ti-headphone-alt mr-3"></i>
+                  <div class="media-body">
+                    <h4 class="text-white">Digital Solutions</h4>
+                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="media">
+                  <i class="icon text-gradient-primary ti-ruler-pencil mr-3"></i>
+                  <div class="media-body">
+                    <h4 class="text-white">Bootstrap 4x</h4>
+                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo</p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
-    <!-- /blog -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /feature -->
 
-    <!-- footer -->
-    <footer class="bg-secondary position-relative">
-        <img src="images/backgrounds/map.png" class="img-fluid overlay-image" alt="">
-        <div class="section">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-3 col-6">
-                        <h4 class="text-white mb-5">About</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-light d-block mb-3">Service</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">Conatact</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">About us</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">Blog</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">Support</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <h4 class="text-white mb-5">Company</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="#" class="text-light d-block mb-3">Service</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">Conatact</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">About us</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">Blog</a></li>
-                            <li><a href="#" class="text-light d-block mb-3">Support</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="bg-white p-4">
-                            <h3>Contact us</h3>
-                            <form action="#">
-                                <input type="text" id="name" name="name" class="form-control mb-4 px-0"
-                                    placeholder="Full name">
-                                <input type="text" id="name" name="name" class="form-control mb-4 px-0"
-                                    placeholder="Email address">
-                                <textarea name="message" id="message" class="form-control mb-4 px-0"
-                                    placeholder="Message"></textarea>
-                                <button class="btn btn-primary" type="submit">Send</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- team -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto text-center">
+        <h2>Our Team</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor</p>
+        <div class="section-border"></div>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-lg-3 col-sm-6">
+        <div class="card hover-shadow">
+          <img src="images/team/member-1.jpg" alt="team-member" class="card-img-top">
+          <div class="card-body text-center position-relative zindex-1">
+            <h4><a class="text-dark" href="team-single.php">Sara Adams</a></h4>
+            <i>Designer</i>
+          </div>
         </div>
-        <div class="pb-4">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-left">
-                        <p class="text-light mb-0">2025 PearOs Sulaiman
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="list-inline text-md-right text-center">
-                            <li class="list-inline-item"><a class="d-block p-3 text-white" href="https://github.com/SulaimanTahaSantos?tab=repositories"><i
-                                        class="ti-github"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card hover-shadow">
+          <img src="images/team/member-2.jpg" alt="team-member" class="card-img-top">
+          <div class="card-body text-center position-relative zindex-1">
+            <h4><a class="text-dark" href="team-single.php">Tom Bills</a></h4>
+            <i>Developer</i>
+          </div>
         </div>
-    </footer>
-    <!-- /footer -->
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card hover-shadow">
+          <img src="images/team/member-3.jpg" alt="team-member" class="card-img-top">
+          <div class="card-body text-center position-relative zindex-1">
+            <h4><a class="text-dark" href="team-single.php">Anna Walle</a></h4>
+            <i>Manager</i>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card hover-shadow">
+          <img src="images/team/member-4.jpg" alt="team-member" class="card-img-top">
+          <div class="card-body text-center">
+            <h4>Devid Json</h4>
+            <i>CEO</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /team -->
 
-    <!-- jQuery -->
-    <script src="plugins/jQuery/jquery.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="plugins/bootstrap/bootstrap.min.js"></script>
-    <!-- slick slider -->
-    <script src="plugins/slick/slick.min.js"></script>
-    <!-- venobox -->
-    <script src="plugins/venobox/venobox.min.js"></script>
-    <!-- shuffle -->
-    <script src="plugins/shuffle/shuffle.min.js"></script>
-    <!-- apear js -->
-    <script src="plugins/counto/apear.js"></script>
-    <!-- counter -->
-    <script src="plugins/counto/counTo.js"></script>
-    <!-- card slider -->
-    <script src="plugins/card-slider/js/card-slider-min.js"></script>
-    <!-- google map -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places">
-    </script>
-    <script src="plugins/google-map/gmap.js"></script>
+<!-- about -->
+<section class="section-lg position-relative bg-cover" data-background="images/backgrounds/about-bg.jpg">
+  <img src="images/backgrounds/about-bg-overlay.png" alt="overlay" class="overlay-image img-fluid">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-6 col-md-8 col-sm-7 col-8">
+        <h2 class="text-white mb-4">Who We Are</h2>
+        <p class="text-light mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+          incididunt
+          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.</p>
+        <a href="about.php" class="btn btn-primary">Read More</a>
+      </div>
+      <div class="col-md-2 col-sm-4 col-4 text-right align-self-end">
+        <a class="venobox" data-autoplay="true" data-vbtype="video"
+          href="https://www.youtube.com/watch?v=jrkvirglgaQ"><i
+            class="text-center icon-sm icon-box rounded-circle text-white bg-gradient-primary d-block ti-control-play"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /about -->
 
-    <!-- Main Script -->
-    <script src="js/script.js"></script>
+<!-- project -->
+<section class="section">
+  <div class="container-fluid px-0">
+    <div class="row">
+      <div class="col-lg-10 mx-auto text-center">
+        <h2>Our Feature Works</h2>
+        <div class="section-border"></div>
+      </div>
+    </div>
+
+    <div class="row no-gutters shuffle-wrapper">
+      <div class="col-lg-4 col-md-6 shuffle-item">
+        <div class="project-item">
+          <img src="images/project/project-1.jpg" alt="project-image" class="img-fluid w-100">
+          <div class="project-hover bg-secondary px-4 py-3">
+            <a href="#" class="text-white h4">Project title</a>
+            <a href="#"><i class="ti-link icon-xs text-white"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 shuffle-item">
+        <div class="project-item">
+          <img src="images/project/project-2.jpg" alt="project-image" class="img-fluid w-100">
+          <div class="project-hover bg-secondary px-4 py-3">
+            <a href="#" class="text-white h4">Project title</a>
+            <a href="#"><i class="ti-link icon-xs text-white"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 shuffle-item">
+        <div class="project-item">
+          <img src="images/project/project-3.jpg" alt="project-image" class="img-fluid w-100">
+          <div class="project-hover bg-secondary px-4 py-3">
+            <a href="#" class="text-white h4">Project title</a>
+            <a href="#"><i class="ti-link icon-xs text-white"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 shuffle-item">
+        <div class="project-item">
+          <img src="images/project/project-4.jpg" alt="project-image" class="img-fluid w-100">
+          <div class="project-hover bg-secondary px-4 py-3">
+            <a href="#" class="text-white h4">Project title</a>
+            <a href="#"><i class="ti-link icon-xs text-white"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 shuffle-item">
+        <div class="project-item">
+          <img src="images/project/project-5.jpg" alt="project-image" class="img-fluid w-100">
+          <div class="project-hover bg-secondary px-4 py-3">
+            <a href="#" class="text-white h4">Project title</a>
+            <a href="#"><i class="ti-link icon-xs text-white"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /project -->
+
+<!-- call to action -->
+<section>
+  <div class="container section-sm overlay-secondary-half bg-cover" data-background="images/backgrounds/cta-bg.jpg">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-1">
+      <h2 class="text-gradient-primary">Let's Start With Us!</h2>
+      <p class="h4 font-weight-bold text-white mb-4">Lorem ipsum dolor sit amet, magna habemus ius ad</p>
+      <a href="contact.php" class="btn btn-lg btn-primary">Let’s talk</a>
+    </div>
+  </div>
+</div>
+</section>
+<!-- /call to action -->
+
+<!-- pricing -->
+<section class="section pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto text-center">
+        <h2>Our Smart Pricing Table</h2>
+        <div class="section-border"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+        <div class="card bottom-shape bg-secondary pt-4 pb-5">
+          <div class="card-body text-center">
+            <h4 class="text-white">Basic</h4>
+            <p class="text-light mb-4">Besic and simple website</p>
+            <p class="text-white mb-4">$ <span class="display-3 font-weight-bold vertical-align-middle">30</span></p>
+            <ul class="list-unstyled mb-5">
+              <li class="text-white mb-3">Mobile-Optimized Website</li>
+              <li class="text-white mb-3">Powerful Website Metrics</li>
+              <li class="text-white mb-3">Free Custom Domain</li>
+              <li class="text-white mb-3">24/7 Customer Support</li>
+              <li class="text-white mb-3">Fully Integrated E-Cormmerce</li>
+              <li class="text-white mb-3">Sell unlimited Product</li>
+            </ul>
+            <a href="#" class="btn btn-outline-light">Try it now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+        <div class="card bottom-shape bg-secondary pt-4 pb-5">
+          <div class="card-body text-center">
+            <h4 class="text-white">Basic</h4>
+            <p class="text-light mb-4">Besic and simple website</p>
+            <p class="text-white mb-4">$ <span class="display-3 font-weight-bold vertical-align-middle">30</span></p>
+            <ul class="list-unstyled mb-5">
+              <li class="text-white mb-3">Mobile-Optimized Website</li>
+              <li class="text-white mb-3">Powerful Website Metrics</li>
+              <li class="text-white mb-3">Free Custom Domain</li>
+              <li class="text-white mb-3">24/7 Customer Support</li>
+              <li class="text-white mb-3">Fully Integrated E-Cormmerce</li>
+              <li class="text-white mb-3">Sell unlimited Product</li>
+            </ul>
+            <a href="#" class="btn btn-outline-light">Try it now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+        <div class="card bottom-shape bg-secondary pt-4 pb-5">
+          <div class="card-body text-center">
+            <h4 class="text-white">Basic</h4>
+            <p class="text-light mb-4">Besic and simple website</p>
+            <p class="text-white mb-4">$ <span class="display-3 font-weight-bold vertical-align-middle">30</span></p>
+            <ul class="list-unstyled mb-5">
+              <li class="text-white mb-3">Mobile-Optimized Website</li>
+              <li class="text-white mb-3">Powerful Website Metrics</li>
+              <li class="text-white mb-3">Free Custom Domain</li>
+              <li class="text-white mb-3">24/7 Customer Support</li>
+              <li class="text-white mb-3">Fully Integrated E-Cormmerce</li>
+              <li class="text-white mb-3">Sell unlimited Product</li>
+            </ul>
+            <a href="#" class="btn btn-outline-light">Try it now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /pricing -->
+
+<!-- blog -->
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 mx-auto text-center">
+        <h2>Latest News</h2>
+        <div class="section-border"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+        <article class="card">
+          <img src="images/blog/post-1.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="#" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+        <article class="card">
+          <img src="images/blog/post-2.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="#" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+        <article class="card">
+          <img src="images/blog/post-3.jpg" alt="post-thumb" class="card-img-top mb-2">
+          <div class="card-body p-0">
+            <time>January 15, 2018</time>
+            <a href="blog-single" class="h4 card-title d-block my-3 text-dark hover-text-underline">How These Different
+              Book Covers Reflect the Design</a>
+            <a href="#" class="btn btn-transparent">Read more</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /blog -->
+
+<!-- footer -->
+<footer class="bg-secondary position-relative">
+  <img src="images/backgrounds/map.png" class="img-fluid overlay-image" alt="">
+  <div class="section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-3 col-6">
+          <h4 class="text-white mb-5">About</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light d-block mb-3">Service</a></li>
+            <li><a href="#" class="text-light d-block mb-3">Conatact</a></li>
+            <li><a href="#" class="text-light d-block mb-3">About us</a></li>
+            <li><a href="#" class="text-light d-block mb-3">Blog</a></li>
+            <li><a href="#" class="text-light d-block mb-3">Support</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 col-6">
+          <h4 class="text-white mb-5">Company</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light d-block mb-3">Service</a></li>
+            <li><a href="#" class="text-light d-block mb-3">Conatact</a></li>
+            <li><a href="#" class="text-light d-block mb-3">About us</a></li>
+            <li><a href="#" class="text-light d-block mb-3">Blog</a></li>
+            <li><a href="#" class="text-light d-block mb-3">Support</a></li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div class="bg-white p-4">
+            <h3>Contact us</h3>
+            <form action="#">
+              <input type="text" id="name" name="name" class="form-control mb-4 px-0" placeholder="Full name">
+              <input type="text" id="name" name="name" class="form-control mb-4 px-0" placeholder="Email address">
+              <textarea name="message" id="message" class="form-control mb-4 px-0" placeholder="Message"></textarea>
+              <button class="btn btn-primary" type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pb-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center text-md-left">
+          <p class="text-light mb-0">Copyright &copy; 2019 a theme by <a class="text-gradient-primary" href="https://themefisher.com">themefisher.com</a>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-inline text-md-right text-center">
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-facebook"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-twitter-alt"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-instagram"></i></a></li>
+            <li class="list-inline-item"><a class="d-block p-3 text-white" href="#"><i class="ti-github"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- /footer -->
+
+<!-- jQuery -->
+<script src="plugins/jQuery/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<!-- slick slider -->
+<script src="plugins/slick/slick.min.js"></script>
+<!-- venobox -->
+<script src="plugins/venobox/venobox.min.js"></script>
+<!-- shuffle -->
+<script src="plugins/shuffle/shuffle.min.js"></script>
+<!-- apear js -->
+<script src="plugins/counto/apear.js"></script>
+<!-- counter -->
+<script src="plugins/counto/counTo.js"></script>
+<!-- card slider -->
+<script src="plugins/card-slider/js/card-slider-min.js"></script>
+<!-- google map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+<script src="plugins/google-map/gmap.js"></script>
+
+<!-- Main Script -->
+<script src="js/script.js"></script>
 
 </body>
-
 </html>
